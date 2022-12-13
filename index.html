@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Socket.IO Clicker</title>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"
+    integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row">
+      <h1 style="text-align: center">Click Counter</h1>
+    </div>
+    <div class="row">
+
+      <div class="col-md-12 ">
+        <p style="text-align: center"><button id='btn_click' class="bnt btn-lg btn-success">Click Me!</button></p>
+
+        <p style="text-align: center">Click counts:<span id="counter"></span></p>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    $(function () {
+
+      var socket = io();//connect to the socket
+
+      socket.on('connect', function () {
+        console.log('Yeah I am connected!!');
+      });
+
+      //Listen from server.js
+      socket.on('click_count', function (value) {
+        $('#counter').html(value);//Set new count value
+      });
+
+      //Says to server that the button has been clicked
+      $('#btn_click').click(function () {
+        socket.emit('clicked');//Emitting user click
+      });
+
+    });
+  </script>
+</body>
+
+</html>
